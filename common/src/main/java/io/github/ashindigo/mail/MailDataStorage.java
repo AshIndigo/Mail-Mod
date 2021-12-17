@@ -3,7 +3,6 @@ package io.github.ashindigo.mail;
 import dev.architectury.hooks.LevelResourceHooks;
 import dev.architectury.utils.GameInstance;
 import io.github.ashindigo.mail.container.MailBoxContainer;
-import io.github.ashindigo.mail.container.MailBoxMenu;
 import io.github.ashindigo.mail.mixin.MinecraftServerAccessor;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
@@ -13,16 +12,13 @@ import net.minecraft.world.level.storage.LevelStorageSource;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 /**
  * Class for managing player mailbox's

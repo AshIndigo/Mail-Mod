@@ -1,6 +1,5 @@
 package io.github.ashindigo.mail;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
@@ -21,7 +20,6 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.MenuType;
@@ -32,8 +30,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
-import java.util.Collection;
-
 public class MailMod {
 
     public static final SimpleNetworkManager NETWORK_MANAGER = SimpleNetworkManager.create(Constants.MODID);
@@ -41,11 +37,11 @@ public class MailMod {
 
     // Blocks
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Constants.MODID, Registry.BLOCK_REGISTRY);
-    public static final RegistrySupplier<Block> MAILBOX = BLOCKS.register("mailbox", () -> new MailBoxBlock());
+    public static final RegistrySupplier<Block> MAILBOX = BLOCKS.register("mailbox", MailBoxBlock::new);
 
     // Block Entities
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Constants.MODID, Registry.BLOCK_ENTITY_TYPE_REGISTRY);
-    public static RegistrySupplier<BlockEntityType<? extends MailBoxEntity>> MAILBOX_ENTITY = BLOCK_ENTITIES.register("mailbox", () -> BlockEntityHooks.builder(MailBoxEntity::new, MAILBOX.get()).build(null));
+    public static final RegistrySupplier<BlockEntityType<? extends MailBoxEntity>> MAILBOX_ENTITY = BLOCK_ENTITIES.register("mailbox", () -> BlockEntityHooks.builder(MailBoxEntity::new, MAILBOX.get()).build(null));
 
     // Containers
     public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(Constants.MODID, Registry.MENU_REGISTRY);
@@ -70,12 +66,7 @@ public class MailMod {
 
         CommandRegistrationEvent.EVENT.register((commandDispatcher, commandSelection) -> {
             LiteralArgumentBuilder<CommandSourceStack> mailCommand = LiteralArgumentBuilder.literal("mail");
-//            mailCommand.then((Commands.literal("check").executes((commandContext) -> checkMail(commandContext.getSource().getServer(), commandContext.getSource().getPlayerOrException()))).then(Commands.argument("target", GameProfileArgument.gameProfile()).executes((commandContext) -> {
-//                return checkMail(commandContext.getSource().getServer(), GameProfileArgument.getGameProfiles(commandContext, "target"));
-//            })));
-
             mailCommand.then((Commands.literal("check").executes((commandContext) -> checkMail(commandContext.getSource().getServer(), commandContext.getSource().getPlayerOrException()))).then(Commands.argument("target", EntityArgument.player()).executes((commandContext) -> checkMail(commandContext.getSource().getServer(), EntityArgument.getPlayer(commandContext, "target")))));
-
             mailCommand.then((Commands.literal("send")).then(Commands.argument("target", EntityArgument.player()).executes((commandContext) -> sendMail(EntityArgument.getPlayer(commandContext, "target")))));
             commandDispatcher.register(mailCommand);
         });
@@ -92,13 +83,6 @@ public class MailMod {
 
     private static int checkMail(MinecraftServer server, ServerPlayer targetPlayer) {
         Helpers.getMailInfoForPlayer(server, targetPlayer);
-        return 0;
-    }
-
-    @Deprecated
-    private static int checkMail(MinecraftServer server, Collection<GameProfile> playerName) {
-        System.out.println(playerName);
-        //Helpers.getInvForOfflinePlayer(server, playerName.);
         return 0;
     }
 }

@@ -4,8 +4,6 @@ import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import io.github.ashindigo.mail.MailMod;
-import io.github.ashindigo.mail.client.screen.CheckMailScreen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.UUID;
