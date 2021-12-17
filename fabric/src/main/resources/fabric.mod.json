@@ -19,6 +19,7 @@
       "io.github.ashindigo.mail.fabric.MailFabric"
     ]
   },
+  "mixins": ["mixin.mail.json"],
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",

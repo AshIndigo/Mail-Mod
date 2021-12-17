@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.ashindigo.mail.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "MinecraftServerAccessor"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
