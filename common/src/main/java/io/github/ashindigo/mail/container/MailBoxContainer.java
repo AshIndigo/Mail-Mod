@@ -181,6 +181,10 @@ public class MailBoxContainer implements Container {
 
     }
 
+    public void fromTag(CompoundTag tag) {
+        fromTag(tag.getList("inv", 0));
+    }
+
     public void fromTag(ListTag arg) {
         for (int i = 0; i < arg.size(); ++i) {
             ItemStack lv = ItemStack.of(arg.getCompound(i));
@@ -188,19 +192,22 @@ public class MailBoxContainer implements Container {
                 this.addItem(lv);
             }
         }
+    }
 
+    public CompoundTag createCompoundTag() {
+        CompoundTag tag = new CompoundTag();
+        tag.put("inv", createTag());
+        return tag;
     }
 
     public ListTag createTag() {
         ListTag lv = new ListTag();
-
         for (int i = 0; i < this.getContainerSize(); ++i) {
             ItemStack lv2 = this.getItem(i);
             if (!lv2.isEmpty()) {
                 lv.add(lv2.save(new CompoundTag()));
             }
         }
-
         return lv;
     }
 }

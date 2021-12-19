@@ -1,6 +1,7 @@
 package io.github.ashindigo.mail;
 
 import com.mojang.authlib.GameProfile;
+import io.github.ashindigo.mail.container.MailBoxContainer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,9 +17,10 @@ public class Helpers {
         return entity.getInventory();
     }
 
-    public static void getMailInfoForPlayer(MinecraftServer server, ServerPlayer targetPlayer) {
+    public static MailBoxContainer getMailInfoForPlayer(MinecraftServer server, ServerPlayer targetPlayer) {
         if (MailDataStorage.getInstance().hasMailbox(targetPlayer.getUUID())) {
-            System.out.println(MailDataStorage.getInstance().getMailBox(targetPlayer.getUUID()));
+           return MailDataStorage.getInstance().getMailBox(targetPlayer.getUUID());
         }
+        return null;
     }
 }

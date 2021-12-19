@@ -11,6 +11,7 @@ import dev.architectury.registry.menu.MenuRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import io.github.ashindigo.mail.block.MailBoxBlock;
+import io.github.ashindigo.mail.container.MailBoxContainer;
 import io.github.ashindigo.mail.container.MailBoxMenu;
 import io.github.ashindigo.mail.entity.MailBoxEntity;
 import io.github.ashindigo.mail.network.CheckMailMessage;
@@ -18,10 +19,17 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -75,14 +83,27 @@ public class MailMod {
     private static int sendMail(ServerPlayer targetPlayer) { // TODO Add amount arg
         ItemStack toSend = targetPlayer.getItemInHand(InteractionHand.MAIN_HAND).copy();
         toSend.setCount(1);
-        if(!targetPlayer.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && MailDataStorage.getInstance().addItemToMailBox(targetPlayer.getUUID(), toSend)) {
+        if (!targetPlayer.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && MailDataStorage.getInstance().addItemToMailBox(targetPlayer.getUUID(), toSend)) {
             targetPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(1);
         }
         return 0;
     }
 
     private static int checkMail(MinecraftServer server, ServerPlayer targetPlayer) {
-        Helpers.getMailInfoForPlayer(server, targetPlayer);
+        MailBoxContainer mailInfoForPlayer = Helpers.getMailInfoForPlayer(server, targetPlayer);
+        if (mailInfoForPlayer != null) {
+            MenuRegistry.openMenu(targetPlayer, new MenuProvider() {
+                @Override
+                public Component getDisplayName() {
+                    return targetPlayer.getDisplayName().copy().append(new TextComponent("'s Mailbox"));
+                }
+
+                @Override
+                public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+                    return ChestMenu.threeRows(i, inventory, mailInfoForPlayer);
+                }
+            });
+        }
         return 0;
     }
 }

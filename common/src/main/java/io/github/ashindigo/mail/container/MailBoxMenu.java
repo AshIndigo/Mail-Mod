@@ -10,8 +10,9 @@ import net.minecraft.world.inventory.MenuType;
 
 public class MailBoxMenu extends AbstractContainerMenu {
 
-    protected MailBoxMenu(MenuType<?> menuType, int i) {
-        super(menuType, i);
+    protected MailBoxMenu(int windowId) {
+        super(MailMod.MAILBOX_CONTAINER.get(), windowId);
+
     }
 
     public MailBoxMenu(int windowId, Inventory playerInv, FriendlyByteBuf buf) {
