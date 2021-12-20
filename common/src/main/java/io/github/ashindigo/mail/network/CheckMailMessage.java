@@ -8,6 +8,7 @@ import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.UUID;
 
+@Deprecated
 public class CheckMailMessage extends BaseS2CMessage {
 
     final UUID playerUUID;
@@ -22,7 +23,7 @@ public class CheckMailMessage extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return MailMod.CHECK_MAIL;
+        return null; //MailMod.CHECK_MAIL;
     }
 
     @Override

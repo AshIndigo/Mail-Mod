@@ -1,18 +1,17 @@
 package io.github.ashindigo.mail.container;
 
-import io.github.ashindigo.mail.MailMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
 
+@Deprecated
 public class MailBoxMenu extends AbstractContainerMenu {
 
     protected MailBoxMenu(int windowId) {
-        super(MailMod.MAILBOX_CONTAINER.get(), windowId);
-
+        //super(MailMod.MAILBOX_CONTAINER.get(), windowId);
+        super(null, windowId);
     }
 
     public MailBoxMenu(int windowId, Inventory playerInv, FriendlyByteBuf buf) {
@@ -20,7 +19,7 @@ public class MailBoxMenu extends AbstractContainerMenu {
     }
 
     public MailBoxMenu(int windowId, Inventory playerInv, BlockPos blockPos) {
-        super(MailMod.MAILBOX_CONTAINER.get(), windowId);
+        this(windowId);
     }
 
     @Override

@@ -58,10 +58,11 @@ public class MailDataStorage {
     public void save() {
         for (UUID uuid : mailBoxes.keySet()) {
             try {
-                CompoundTag tag = new CompoundTag();
-                tag.put("inv", mailBoxes.get(uuid).createTag());
+//                CompoundTag tag = new CompoundTag();
+//                tag.put("inv", mailBoxes.get(uuid).createTag());
+
                 File file = File.createTempFile(uuid + "-", ".dat", this.mailDir);
-                NbtIo.writeCompressed(tag, file);
+                NbtIo.writeCompressed(mailBoxes.get(uuid).createCompoundTag(), file);
                 File file2 = new File(this.mailDir, uuid + ".dat");
                 File file3 = new File(this.mailDir, uuid + ".dat_old");
                 Util.safeReplaceFile(file2, file, file3);
@@ -89,7 +90,7 @@ public class MailDataStorage {
                     }
                     if (compoundTag != null) {
                         mailBoxes.put(UUID.fromString(name), new MailBoxContainer());
-                        mailBoxes.get(UUID.fromString(name)).fromTag(compoundTag.getList("inv", 0));
+                        mailBoxes.get(UUID.fromString(name)).fromTag(compoundTag);
                     }
                 }
             });

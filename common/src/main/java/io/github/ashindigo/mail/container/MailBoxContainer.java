@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class MailBoxContainer implements Container {
 
-    private final int SIZE = 27;
+    private final int SIZE = 27; // 9 * 3, three rows.
     private final NonNullList<ItemStack> items;
 
     public MailBoxContainer() {

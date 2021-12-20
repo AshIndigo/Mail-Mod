@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 
+@Deprecated
 public class CheckMailScreen extends AbstractContainerScreen<MailBoxMenu> {
 
     public CheckMailScreen(MailBoxMenu mailBoxMenu, Inventory playerInv, Component component) {
