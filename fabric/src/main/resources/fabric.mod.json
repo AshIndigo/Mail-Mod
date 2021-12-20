@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "mailmod",
+  "id": "mail",
   "version": "${version}",
   "name": "Mail Mod",
   "description": "Mod for sending and receiving items from other players on a server",
@@ -12,8 +12,8 @@
     "sources": "#"
   },
   "license": "MIT",
-  "icon": "assets/mailmod/icon.png",
-  "environment": "*",
+  "icon": "assets/mail/icon.png",
+  "environment": "server",
   "entrypoints": {
     "main": [
       "io.github.ashindigo.mail.fabric.MailFabric"

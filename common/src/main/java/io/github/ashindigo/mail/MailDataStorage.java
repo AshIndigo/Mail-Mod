@@ -44,10 +44,7 @@ public class MailDataStorage {
      * Returns false if item failed to be added (typically because of full mailbox)
      */
     public boolean addItemToMailBox(UUID uuid, ItemStack stack) {
-        if (!mailBoxes.containsKey(uuid)) {
-            mailBoxes.put(uuid, new MailBoxContainer());
-        }
-        MailBoxContainer container = mailBoxes.get(uuid);
+        MailBoxContainer container = createMailBox(uuid);
         if (container.canAddItem(stack)) {
             container.addItem(stack);
             return true;
@@ -55,12 +52,16 @@ public class MailDataStorage {
         return false;
     }
 
+    public MailBoxContainer createMailBox(UUID uuid) {
+        if (!mailBoxes.containsKey(uuid)) {
+            mailBoxes.put(uuid, new MailBoxContainer());
+        }
+        return getMailBox(uuid);
+    }
+
     public void save() {
         for (UUID uuid : mailBoxes.keySet()) {
             try {
-//                CompoundTag tag = new CompoundTag();
-//                tag.put("inv", mailBoxes.get(uuid).createTag());
-
                 File file = File.createTempFile(uuid + "-", ".dat", this.mailDir);
                 NbtIo.writeCompressed(mailBoxes.get(uuid).createCompoundTag(), file);
                 File file2 = new File(this.mailDir, uuid + ".dat");

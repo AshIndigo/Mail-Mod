@@ -17,10 +17,10 @@ public class Helpers {
         return entity.getInventory();
     }
 
-    public static MailBoxContainer getMailInfoForPlayer(MinecraftServer server, ServerPlayer targetPlayer) {
-        if (MailDataStorage.getInstance().hasMailbox(targetPlayer.getUUID())) {
-           return MailDataStorage.getInstance().getMailBox(targetPlayer.getUUID());
+    public static MailBoxContainer getMailInfoForPlayer(ServerPlayer targetPlayer) {
+        if (!MailDataStorage.getInstance().hasMailbox(targetPlayer.getUUID())) {
+           MailDataStorage.getInstance().createMailBox(targetPlayer.getUUID());
         }
-        return null;
+        return MailDataStorage.getInstance().getMailBox(targetPlayer.getUUID());
     }
 }

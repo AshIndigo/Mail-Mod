@@ -30,8 +30,8 @@ public class MailMod {
         CommandRegistrationEvent.EVENT.register((commandDispatcher, commandSelection) -> {
             LiteralArgumentBuilder<CommandSourceStack> mailCommand = LiteralArgumentBuilder.literal("mail");
             // Check
-            mailCommand.then((Commands.literal("check").executes((commandContext) -> checkMail(commandContext.getSource().getServer(), commandContext.getSource().getPlayerOrException())))
-                    .then(Commands.argument("target", EntityArgument.player()).executes((commandContext) -> checkMail(commandContext.getSource().getServer(), EntityArgument.getPlayer(commandContext, "target")))));
+            mailCommand.then((Commands.literal("check").executes((commandContext) -> checkMail(commandContext.getSource().getPlayerOrException())))
+                    .then(Commands.argument("target", EntityArgument.player()).executes((commandContext) -> checkMail(EntityArgument.getPlayer(commandContext, "target")))));
             // Send
             mailCommand.then((Commands.literal("send"))
                     .then(Commands.argument("target", EntityArgument.player()).executes((commandContext) -> sendMail(EntityArgument.getPlayer(commandContext, "target"), 1))
@@ -52,8 +52,8 @@ public class MailMod {
         return 0;
     }
 
-    public static int checkMail(MinecraftServer server, ServerPlayer targetPlayer) {
-        MailBoxContainer mailInfoForPlayer = Helpers.getMailInfoForPlayer(server, targetPlayer);
+    public static int checkMail(ServerPlayer targetPlayer) {
+        MailBoxContainer mailInfoForPlayer = Helpers.getMailInfoForPlayer(targetPlayer);
         if (mailInfoForPlayer == null) {
             MailDataStorage.getInstance().addItemToMailBox(targetPlayer.getUUID(), ItemStack.EMPTY);
         }

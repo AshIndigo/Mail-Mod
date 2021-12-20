@@ -4,7 +4,7 @@ loaderVersion = "[37,)"
 license = "MIT"
 
 [[mods]]
-modId = "mailmod"
+modId = "mail"
 version = "${version}"
 displayName = "Mail Mod"
 authors = "AshIndigo"
@@ -13,21 +13,21 @@ Mod for sending and receiving items from other players on a server
 '''
 #logoFile = ""
 
-[[dependencies.mailmod]]
+[[dependencies.mail]]
 modId = "forge"
 mandatory = true
 versionRange = "[37,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.mailmod]]
+[[dependencies.mail]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.17.1,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.mailmod]]
+[[dependencies.mail]]
 modId = "architectury"
 mandatory = true
 versionRange = "[2.3.23,)"
