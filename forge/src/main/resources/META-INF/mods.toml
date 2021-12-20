@@ -1,17 +1,17 @@
 modLoader = "javafml"
 loaderVersion = "[37,)"
-#issueTrackerURL = ""
+issueTrackerURL = "https://github.com/AshIndigo/Mail-Mod/issues"
 license = "MIT"
 
 [[mods]]
 modId = "mail"
 version = "${version}"
-displayName = "Mail Mod"
+displayName = "Mail"
 authors = "AshIndigo"
 description = '''
 Mod for sending and receiving items from other players on a server
 '''
-#logoFile = ""
+logoFile = "icon.png"
 
 [[dependencies.mail]]
 modId = "forge"
