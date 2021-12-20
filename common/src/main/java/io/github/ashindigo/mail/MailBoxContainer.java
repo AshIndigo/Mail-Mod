@@ -1,4 +1,4 @@
-package io.github.ashindigo.mail.container;
+package io.github.ashindigo.mail;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;

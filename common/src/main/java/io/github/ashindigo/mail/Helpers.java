@@ -1,7 +1,6 @@
 package io.github.ashindigo.mail;
 
 import com.mojang.authlib.GameProfile;
-import io.github.ashindigo.mail.container.MailBoxContainer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;

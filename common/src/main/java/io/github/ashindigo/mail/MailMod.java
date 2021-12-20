@@ -4,14 +4,11 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
-import dev.architectury.registry.menu.MenuRegistry;
-import io.github.ashindigo.mail.container.MailBoxContainer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
@@ -30,8 +27,8 @@ public class MailMod {
         CommandRegistrationEvent.EVENT.register((commandDispatcher, commandSelection) -> {
             LiteralArgumentBuilder<CommandSourceStack> mailCommand = LiteralArgumentBuilder.literal("mail");
             // Check
-            mailCommand.then((Commands.literal("check").executes((commandContext) -> checkMail(commandContext.getSource().getPlayerOrException())))
-                    .then(Commands.argument("target", EntityArgument.player()).executes((commandContext) -> checkMail(EntityArgument.getPlayer(commandContext, "target")))));
+            mailCommand.then((Commands.literal("check").executes((commandContext) -> checkMail(commandContext.getSource().getPlayerOrException()))))
+                    .requires((commandSourceStack) -> commandSourceStack.hasPermission(2)).then(Commands.argument("target", EntityArgument.player()).executes((commandContext) -> checkMail(EntityArgument.getPlayer(commandContext, "target"))));
             // Send
             mailCommand.then((Commands.literal("send"))
                     .then(Commands.argument("target", EntityArgument.player()).executes((commandContext) -> sendMail(EntityArgument.getPlayer(commandContext, "target"), 1))
@@ -40,7 +37,7 @@ public class MailMod {
         });
     }
 
-    private static int sendMail(ServerPlayer targetPlayer, int amount) { // TODO Add amount arg
+    private static int sendMail(ServerPlayer targetPlayer, int amount) {
         ItemStack toSend = targetPlayer.getItemInHand(InteractionHand.MAIN_HAND);
         if (toSend.getCount() >= amount) {
             toSend = toSend.copy();
@@ -57,12 +54,11 @@ public class MailMod {
         if (mailInfoForPlayer == null) {
             MailDataStorage.getInstance().addItemToMailBox(targetPlayer.getUUID(), ItemStack.EMPTY);
         }
-        MenuRegistry.openMenu(targetPlayer, new MenuProvider() {
+        targetPlayer.openMenu(new MenuProvider() {
             @Override
             public Component getDisplayName() {
                 return targetPlayer.getDisplayName().copy().append(new TextComponent("'s Mailbox"));
             }
-
             @Override
             public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
                 return ChestMenu.threeRows(i, inventory, mailInfoForPlayer);

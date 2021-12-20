@@ -1,14 +1,11 @@
 package io.github.ashindigo.mail;
 
-import dev.architectury.hooks.LevelResourceHooks;
 import dev.architectury.utils.GameInstance;
-import io.github.ashindigo.mail.container.MailBoxContainer;
-import io.github.ashindigo.mail.mixin.MinecraftServerAccessor;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.LevelStorageSource;
+import net.minecraft.world.level.storage.LevelResource;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,8 +28,7 @@ public class MailDataStorage {
     private final HashMap<UUID, MailBoxContainer> mailBoxes = new HashMap<>();
 
     private MailDataStorage() {
-        LevelStorageSource.LevelStorageAccess levelStorageAccess = ((MinecraftServerAccessor) GameInstance.getServer()).getStorageSource();
-        this.mailDir = levelStorageAccess.getLevelPath(LevelResourceHooks.create(Constants.MAILBOX)).toFile();
+        this.mailDir = GameInstance.getServer().getWorldPath(new LevelResource(Constants.MAILBOX)).toFile();
         this.mailDir.mkdirs();
     }
 
