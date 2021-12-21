@@ -6,57 +6,21 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class MailBoxContainer implements Container {
 
     private final int SIZE = 27; // 9 * 3, three rows.
-    private final NonNullList<ItemStack> items;
-
-    public MailBoxContainer() {
-        this.items = NonNullList.withSize(SIZE, ItemStack.EMPTY);
-    }
+    private final NonNullList<ItemStack> items = NonNullList.withSize(SIZE, ItemStack.EMPTY);
 
     @Override
     public ItemStack getItem(int i) {
         return i >= 0 && i < this.items.size() ? this.items.get(i) : ItemStack.EMPTY;
     }
 
-    public List<ItemStack> removeAllItems() {
-        List<ItemStack> list = this.items.stream().filter(arg -> !arg.isEmpty()).collect(Collectors.toList());
-        this.clearContent();
-        return list;
-    }
-
     @Override
     public ItemStack removeItem(int i, int j) {
         ItemStack lv = ContainerHelper.removeItem(this.items, i, j);
-        if (!lv.isEmpty()) {
-            this.setChanged();
-        }
-
-        return lv;
-    }
-
-    public ItemStack removeItemType(Item arg, int i) {
-        ItemStack lv = new ItemStack(arg, 0);
-
-        for (int j = this.SIZE - 1; j >= 0; --j) {
-            ItemStack lv2 = this.getItem(j);
-            if (lv2.getItem().equals(arg)) {
-                int k = i - lv.getCount();
-                ItemStack lv3 = lv2.split(k);
-                lv.grow(lv3.getCount());
-                if (lv.getCount() == i) {
-                    break;
-                }
-            }
-        }
-
         if (!lv.isEmpty()) {
             this.setChanged();
         }
@@ -84,7 +48,6 @@ public class MailBoxContainer implements Container {
                 break;
             }
         }
-
         return bl;
     }
 

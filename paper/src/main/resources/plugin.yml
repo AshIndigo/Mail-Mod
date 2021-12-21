@@ -1,0 +1,4 @@
+name: Mail
+version: '${version}'
+main: io.github.ashindigo.mail.Mail
+api-version: 1.17

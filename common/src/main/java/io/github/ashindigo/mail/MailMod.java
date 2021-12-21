@@ -50,7 +50,7 @@ public class MailMod {
     }
 
     public static int checkMail(ServerPlayer targetPlayer) {
-        MailBoxContainer mailInfoForPlayer = Helpers.getMailInfoForPlayer(targetPlayer);
+        MailBoxContainer mailInfoForPlayer = getMailInfoForPlayer(targetPlayer);
         if (mailInfoForPlayer == null) {
             MailDataStorage.getInstance().addItemToMailBox(targetPlayer.getUUID(), ItemStack.EMPTY);
         }
@@ -65,5 +65,12 @@ public class MailMod {
             }
         });
         return 0;
+    }
+
+    public static MailBoxContainer getMailInfoForPlayer(ServerPlayer targetPlayer) {
+        if (!MailDataStorage.getInstance().hasMailbox(targetPlayer.getUUID())) {
+           MailDataStorage.getInstance().createMailBox(targetPlayer.getUUID());
+        }
+        return MailDataStorage.getInstance().getMailBox(targetPlayer.getUUID());
     }
 }
