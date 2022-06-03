@@ -35,7 +35,7 @@ public class MailCommand extends Command {
 
     public static int checkMail(Player targetPlayer) {
         MailBoxContainer mailInfoForPlayer = Mail.getMailInfoForPlayer(targetPlayer);
-        Bukkit.createInventory()
+        Bukkit.createInventory();
         if (mailInfoForPlayer == null) {
             MailDataStorage.getInstance().addItemToMailBox(targetPlayer.getUUID(), ItemStack.EMPTY);
         }
