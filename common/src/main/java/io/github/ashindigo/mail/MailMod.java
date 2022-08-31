@@ -31,21 +31,26 @@ public class MailMod {
                     .requires((commandSourceStack) -> commandSourceStack.hasPermission(2)).then(Commands.argument("target", EntityArgument.player()).executes((commandContext) -> checkMail(EntityArgument.getPlayer(commandContext, "target"))));
             // Send
             mailCommand.then((Commands.literal("send"))
-                    .then(Commands.argument("target", EntityArgument.player()).executes((commandContext) -> sendMail(EntityArgument.getPlayer(commandContext, "target"), 1))
-                    .then(Commands.argument("amount", IntegerArgumentType.integer(1, 64)).executes((commandContext) -> sendMail(EntityArgument.getPlayer(commandContext, "target"), IntegerArgumentType.getInteger(commandContext, "amount"))))));
+                    .then(Commands.argument("target", EntityArgument.player()).executes((commandContext) -> sendMail(commandContext.getSource().getPlayerOrException(), EntityArgument.getPlayer(commandContext, "target"), 1))
+                    .then(Commands.argument("amount", IntegerArgumentType.integer(1, 64)).executes((commandContext) -> sendMail(commandContext.getSource().getPlayerOrException(), EntityArgument.getPlayer(commandContext, "target"), IntegerArgumentType.getInteger(commandContext, "amount"))))));
             commandDispatcher.register(mailCommand);
         });
     }
 
-    private static int sendMail(ServerPlayer targetPlayer, int amount) {
-        ItemStack toSend = targetPlayer.getItemInHand(InteractionHand.MAIN_HAND);
-        if (toSend.getCount() >= amount) {
+    private static int sendMail(ServerPlayer runner, ServerPlayer targetPlayer, int amount) {
+        ItemStack toSend = runner.getItemInHand(InteractionHand.MAIN_HAND);
+        if (toSend.getCount() >= amount) { // If sender actually has enough
             toSend = toSend.copy();
             toSend.setCount(amount);
-            if (!targetPlayer.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && MailDataStorage.getInstance().addItemToMailBox(targetPlayer.getUUID(), toSend)) {
-                targetPlayer.getItemInHand(InteractionHand.MAIN_HAND).shrink(amount);
+            if (!runner.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && MailDataStorage.getInstance().addItemToMailBox(targetPlayer.getUUID(), toSend)) {
+                runner.getItemInHand(InteractionHand.MAIN_HAND).shrink(amount);
+            } else {
+                runner.displayClientMessage(new TextComponent("Hand empty or recipient's mailbox is full"), true);
             }
+        } else {
+            runner.displayClientMessage(new TextComponent("Not enough of item"), true);
         }
+
         return 0;
     }
 
